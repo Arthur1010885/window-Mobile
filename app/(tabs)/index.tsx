@@ -1,48 +1,37 @@
-import { ScrollView, Text, View, TouchableOpacity } from "react-native";
-
+import { useMemo } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
+import { COLORS, flags, games, getDeviceSnapshot, getGpuRecommendation, performanceProfiles } from "@/lib/nexterra";
+import { useNexTerra } from "@/lib/nexterra-state";
 
-/**
- * Home Screen - NativeWind Example
- *
- * This template uses NativeWind (Tailwind CSS for React Native).
- * You can use familiar Tailwind classes directly in className props.
- *
- * Key patterns:
- * - Use `className` instead of `style` for most styling
- * - Theme colors: use tokens directly (bg-background, text-foreground, bg-primary, etc.); no dark: prefix needed
- * - Responsive: standard Tailwind breakpoints work on web
- * - Custom colors defined in tailwind.config.js
- */
+function Mark() { return <View style={styles.mark}><View style={styles.markBarA} /><View style={styles.markBarB} /></View>; }
+function Pill({ children, tone = COLORS.cyan }: { children: string; tone?: string }) { return <View style={[styles.pill, { borderColor: tone + "55", backgroundColor: tone + "18" }]}><Text style={[styles.pillText, { color: tone }]}>{children}</Text></View>; }
+function Stat({ label, value, icon }: { label: string; value: string; icon: string }) { return <View style={styles.stat}><Text style={styles.statIcon}>{icon}</Text><View><Text style={styles.statLabel}>{label}</Text><Text style={styles.statValue}>{value}</Text></View></View>; }
+
 export default function HomeScreen() {
+  const router = useRouter();
+  const { language, t, profile, setProfile, setSetupVisible } = useNexTerra();
+  const device = useMemo(() => getDeviceSnapshot(), []);
+  const gpu = getGpuRecommendation(profile);
+  const activeGames = games.filter((game) => game.favorite);
   return (
-    <ScreenContainer className="p-6">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View className="flex-1 gap-8">
-          {/* Hero Section */}
-          <View className="items-center gap-2">
-            <Text className="text-4xl font-bold text-foreground">Welcome</Text>
-            <Text className="text-base text-muted text-center">
-              Edit app/(tabs)/index.tsx to get started
-            </Text>
-          </View>
-
-          {/* Example Card */}
-          <View className="w-full max-w-sm self-center bg-surface rounded-2xl p-6 shadow-sm border border-border">
-            <Text className="text-lg font-semibold text-foreground mb-2">NativeWind Ready</Text>
-            <Text className="text-sm text-muted leading-relaxed">
-              Use Tailwind CSS classes directly in your React Native components.
-            </Text>
-          </View>
-
-          {/* Example Button */}
-          <View className="items-center">
-            <TouchableOpacity className="bg-primary px-6 py-3 rounded-full active:opacity-80">
-              <Text className="text-background font-semibold">Get Started</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+    <ScreenContainer containerClassName="bg-[#07111D]" edges={["top"]}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+        <View style={styles.topbar}><View style={styles.brand}><Mark /><View><Text style={styles.wordmark}>NexTerra</Text><Text style={styles.brandSub}>MOBILE PC MODE</Text></View></View><Pressable style={styles.langChip} onPress={() => {}}><Text style={styles.langFlag}>{flags[language]}</Text><Text style={styles.langText}>{language === "pt-BR" ? "PT" : "EN"}</Text></Pressable></View>
+        <View style={styles.hero}><View style={styles.heroGlow} /><Text style={styles.eyebrow}>NEXUS / 01</Text><Text style={styles.title}>{t("greeting")}</Text><Text style={styles.subtitle}>{t("subtitle")}</Text><Pressable style={styles.primaryButton} onPress={() => { setSetupVisible(true); router.push("/setup"); }}><Text style={styles.primaryText}>{t("openSetup")}</Text><Text style={styles.arrow}>↗</Text></Pressable></View>
+        <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>{t("device")}</Text><Pill tone={COLORS.green}>{device.confidence === "Preview" ? t("pending") : t("detected")}</Pill></View>
+        <View style={styles.deviceCard}><View style={styles.deviceHeader}><View><Text style={styles.deviceName}>{device.model}</Text><Text style={styles.deviceOs}>{device.os}</Text></View><View style={styles.signal}><View style={[styles.signalDot, { backgroundColor: COLORS.green }]} /><Text style={styles.signalText}>ONLINE</Text></View></View><View style={styles.statsRow}><Stat icon="⌁" label={t("cpu")} value={device.cpu} /><Stat icon="◈" label={t("gpu")} value={device.gpu} /><Stat icon="▦" label={t("memory")} value={device.ram} /></View><Text style={styles.infoText}>{language === "pt-BR" ? "Dados detalhados de CPU, GPU e RAM entram pela ponte nativa Android." : "Detailed CPU, GPU and RAM data will arrive through the native Android bridge."}</Text></View>
+        <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>{t("optimize")}</Text><Text style={styles.link}>{t("viewDetails")}</Text></View>
+        <View style={styles.profileRow}>{(Object.keys(performanceProfiles) as (keyof typeof performanceProfiles)[]).map((key) => { const item = performanceProfiles[key]; const active = key === profile; return <Pressable key={key} onPress={() => setProfile(key)} style={[styles.profileCard, active && { borderColor: item.accent, backgroundColor: item.accent + "18" }]}><View style={[styles.profileDot, { backgroundColor: item.accent }]} /><Text style={styles.profileName}>{t(key)}</Text><Text style={styles.profileDescription}>{item.description}</Text>{active && <Text style={[styles.selected, { color: item.accent }]}>● ATIVO</Text>}</Pressable>; })}</View>
+        <View style={styles.recommendation}><View style={styles.recIcon}><Text style={styles.recIconText}>✦</Text></View><View style={styles.recBody}><Text style={styles.recEyebrow}>{t("recommended")}</Text><Text style={styles.recTitle}>{t("gpuRecommendation")}: {gpu.title}</Text><Text style={styles.recDetail}>{gpu.detail}</Text></View><Text style={styles.recScore}>{gpu.score}%</Text></View>
+        <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>{t("games")}</Text><Pressable onPress={() => router.push("/(tabs)/library")}><Text style={styles.link}>Ver tudo →</Text></Pressable></View>
+        <View style={styles.gameStrip}>{activeGames.map((game) => <Pressable key={game.id} style={styles.gameCard} onPress={() => router.push("/(tabs)/library")}><View style={[styles.gameArt, { backgroundColor: game.color }]}><Text style={styles.gameGlyph}>{game.title.charAt(0)}</Text><View style={styles.gameOverlay} /></View><Text numberOfLines={1} style={styles.gameTitle}>{game.title}</Text><Text style={styles.gameMeta}>{game.category} · {game.status === "ready" ? "READY" : "TUNING"}</Text></Pressable>)}</View>
       </ScrollView>
     </ScreenContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  content: { padding: 20, paddingBottom: 44, gap: 16 }, topbar: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }, brand: { flexDirection: "row", alignItems: "center", gap: 10 }, mark: { width: 34, height: 34, borderRadius: 11, backgroundColor: COLORS.cyan, position: "relative", overflow: "hidden" }, markBarA: { position: "absolute", width: 9, height: 36, backgroundColor: COLORS.bg, transform: [{ rotate: "32deg" }], left: 8, top: -2 }, markBarB: { position: "absolute", width: 9, height: 36, backgroundColor: COLORS.bg, transform: [{ rotate: "32deg" }], left: 19, top: -2 }, wordmark: { color: COLORS.text, fontSize: 19, fontWeight: "800", letterSpacing: -0.5 }, brandSub: { color: COLORS.muted, fontSize: 8, fontWeight: "700", letterSpacing: 1.7, marginTop: 1 }, langChip: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 10, paddingVertical: 7, borderRadius: 14, borderWidth: 1, borderColor: COLORS.line, backgroundColor: COLORS.panel }, langFlag: { fontSize: 16 }, langText: { color: COLORS.muted, fontSize: 11, fontWeight: "800" }, hero: { minHeight: 190, overflow: "hidden", borderRadius: 24, padding: 22, backgroundColor: COLORS.panel, borderColor: COLORS.line, borderWidth: 1 }, heroGlow: { position: "absolute", width: 220, height: 220, borderRadius: 110, backgroundColor: COLORS.cyan + "18", right: -80, top: -80 }, eyebrow: { color: COLORS.cyan, fontSize: 10, fontWeight: "800", letterSpacing: 1.8, marginBottom: 10 }, title: { color: COLORS.text, fontSize: 28, lineHeight: 32, fontWeight: "800", maxWidth: 310, letterSpacing: -0.8 }, subtitle: { color: COLORS.muted, fontSize: 13, lineHeight: 19, marginTop: 8, maxWidth: 300 }, primaryButton: { alignSelf: "flex-start", flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: COLORS.cyan, borderRadius: 13, paddingHorizontal: 15, paddingVertical: 11, marginTop: 18 }, primaryText: { color: COLORS.bg, fontSize: 12, fontWeight: "800" }, arrow: { color: COLORS.bg, fontSize: 16, fontWeight: "700" }, sectionHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 4 }, sectionTitle: { color: COLORS.text, fontSize: 15, fontWeight: "800" }, link: { color: COLORS.cyan, fontSize: 11, fontWeight: "700" }, pill: { borderWidth: 1, borderRadius: 20, paddingHorizontal: 9, paddingVertical: 5 }, pillText: { fontSize: 9, fontWeight: "800", letterSpacing: 0.3 }, deviceCard: { backgroundColor: COLORS.panel, borderRadius: 18, borderWidth: 1, borderColor: COLORS.line, padding: 15 }, deviceHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }, deviceName: { color: COLORS.text, fontWeight: "800", fontSize: 16 }, deviceOs: { color: COLORS.muted, fontSize: 11, marginTop: 3 }, signal: { flexDirection: "row", alignItems: "center", gap: 5 }, signalDot: { width: 6, height: 6, borderRadius: 4 }, signalText: { color: COLORS.green, fontSize: 8, fontWeight: "800", letterSpacing: 1 }, statsRow: { flexDirection: "row", gap: 8, marginTop: 15 }, stat: { flex: 1, minHeight: 60, borderRadius: 12, backgroundColor: COLORS.panelSoft, padding: 9, flexDirection: "row", gap: 7, alignItems: "center" }, statIcon: { color: COLORS.cyan, fontSize: 19 }, statLabel: { color: COLORS.muted, fontSize: 9 }, statValue: { color: COLORS.text, fontSize: 10, fontWeight: "700", marginTop: 3 }, infoText: { color: COLORS.muted, fontSize: 10, lineHeight: 15, marginTop: 12 }, profileRow: { flexDirection: "row", gap: 8 }, profileCard: { flex: 1, minHeight: 112, borderRadius: 15, borderWidth: 1, borderColor: COLORS.line, backgroundColor: COLORS.panel, padding: 11 }, profileDot: { width: 7, height: 7, borderRadius: 6, marginBottom: 8 }, profileName: { color: COLORS.text, fontSize: 12, fontWeight: "800" }, profileDescription: { color: COLORS.muted, fontSize: 9, lineHeight: 13, marginTop: 5 }, selected: { fontSize: 8, fontWeight: "800", marginTop: 9 }, recommendation: { flexDirection: "row", alignItems: "center", gap: 11, padding: 13, borderRadius: 16, backgroundColor: COLORS.violet + "12", borderWidth: 1, borderColor: COLORS.violet + "38" }, recIcon: { width: 32, height: 32, borderRadius: 11, backgroundColor: COLORS.violet + "26", alignItems: "center", justifyContent: "center" }, recIconText: { color: COLORS.violet }, recBody: { flex: 1 }, recEyebrow: { color: COLORS.violet, fontSize: 9, fontWeight: "800", letterSpacing: 0.5 }, recTitle: { color: COLORS.text, fontSize: 12, fontWeight: "800", marginTop: 3 }, recDetail: { color: COLORS.muted, fontSize: 9, marginTop: 3 }, recScore: { color: COLORS.violet, fontSize: 18, fontWeight: "900" }, gameStrip: { flexDirection: "row", gap: 10 }, gameCard: { width: 140 }, gameArt: { height: 92, borderRadius: 15, alignItems: "center", justifyContent: "center", overflow: "hidden" }, gameGlyph: { color: "#FFFFFFCC", fontSize: 46, fontWeight: "900" }, gameOverlay: { ...StyleSheet.absoluteFill, backgroundColor: "#07111D33" }, gameTitle: { color: COLORS.text, fontSize: 11, fontWeight: "800", marginTop: 8 }, gameMeta: { color: COLORS.muted, fontSize: 9, marginTop: 3, textTransform: "uppercase" },
+});

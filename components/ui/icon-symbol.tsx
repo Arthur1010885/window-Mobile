@@ -18,6 +18,9 @@ const MAPPING = {
   "paperplane.fill": "send",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
+  desktopcomputer: "desktop-windows",
+  "gamecontroller.fill": "sports-esports",
+  "slider.horizontal.3": "tune",
 } satisfies IconMapping;
 
 /**
