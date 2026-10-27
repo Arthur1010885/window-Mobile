@@ -8,6 +8,13 @@ public abstract class GPUInformation {
         return getRenderer(null, context).toLowerCase().contains("adreno");
     }
 
+    public static boolean isPowerVRGPU(Context context) {
+        String renderer = getRenderer(null, context);
+        if (renderer == null) return false;
+        renderer = renderer.toLowerCase();
+        return renderer.contains("powervr") || renderer.contains("rogue");
+    }
+
     public static boolean isDriverSupported(String driverName, Context context) {
         if (!isAdrenoGPU(context) && !driverName.equals("System"))
             return false;

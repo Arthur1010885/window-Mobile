@@ -29,6 +29,7 @@ import com.winlator.cmod.contents.ContentProfile;
 import com.winlator.cmod.contents.ContentsManager;
 import com.winlator.cmod.contents.RemoteDriverCatalog;
 import com.winlator.cmod.core.DefaultVersion;
+import com.winlator.cmod.core.GPUInformation;
 import com.winlator.cmod.core.OpenGLDriverDefaults;
 import com.winlator.cmod.core.ProtonPackageManager;
 import com.winlator.cmod.core.WineInfo;
@@ -897,7 +898,7 @@ public class OnboardingActivity extends AppCompatActivity {
             data.put("envVars", Container.DEFAULT_ENV_VARS);
             data.put("graphicsDriver", Container.DEFAULT_GRAPHICS_DRIVER);
             data.put("graphicsDriverConfig", Container.DEFAULT_GRAPHICSDRIVERCONFIG);
-            data.put("rendererNative", false);
+            data.put("rendererNative", GPUInformation.isPowerVRGPU(this));
             data.put("rendererPresentMode", "fifo");
             data.put("dxwrapper", Container.DEFAULT_DXWRAPPER);
             data.put("dxwrapperConfig", Container.DEFAULT_DXWRAPPERCONFIG);
