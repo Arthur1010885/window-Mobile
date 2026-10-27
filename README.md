@@ -51,7 +51,7 @@ A separação é intencional. A UI pode evoluir sem quebrar o runtime nativo, e 
 
 ## APK nativo
 
-O workflow [Android CI Bionic](https://github.com/Arthur1010885/window-Mobile/actions/workflows/build.yml) gera o APK da branch `native-runtime` com JDK 17, Android SDK, NDK e dependências nativas. Abra a execução mais recente em **Actions → Android CI Bionic → Artifacts** para baixar o artefato `NexTerra-Native-*`.
+O primeiro APK está disponível na [Release `v0.1.0-native`](https://github.com/Arthur1010885/window-Mobile/releases/tag/v0.1.0-native), com descrição ilustrada, preview, checksum e instruções de instalação. O workflow [Android CI Bionic](https://github.com/Arthur1010885/window-Mobile/actions/workflows/build.yml) continua gerando novos artefatos da branch `native-runtime`.
 
 O APK nativo é arm64-v8a. A compatibilidade depende do Android, SoC, GPU, driver Vulkan, memória, temperatura e do jogo. A branch nativa usa o kernel Android real do aparelho; um APK não instala um kernel próprio. Kernel customizado é uma imagem de boot/ROM específica por dispositivo e fica fora do escopo de um aplicativo comum.
 
