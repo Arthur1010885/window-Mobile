@@ -4,6 +4,7 @@ import { Platform } from "react-native";
 export type Language = "pt-BR" | "en-US";
 export type PerformanceProfile = "eco" | "balanced" | "turbo";
 export type GameStatus = "ready" | "tuning" | "native";
+export type ChipsetFamily = "auto" | "snapdragon" | "mediatek";
 
 export const COLORS = {
   bg: "#07111D",
@@ -23,11 +24,16 @@ export const COLORS = {
 
 export const translations = {
   "pt-BR": {
-    home: "Área de trabalho",
+    home: "Atalhos",
     library: "Jogos",
-    settings: "Config.",
-    greeting: "Seu hardware, sem adivinhação.",
-    subtitle: "Um cockpit Windows portátil, transparente e configurável.",
+    settings: "Ajustes",
+    greeting: "Seus jogos, direto ao ponto.",
+    subtitle: "Abra um atalho, ajuste o perfil e jogue quando a ponte nativa estiver pronta.",
+    shortcuts: "Atalhos",
+    addShortcut: "Adicionar jogo",
+    environments: "Ambientes",
+    open: "Abrir",
+    configure: "Ajustar",
     device: "Meu dispositivo",
     detected: "detecção disponível",
     pending: "ponte nativa pendente",
@@ -66,13 +72,27 @@ export const translations = {
     cpu: "Processador",
     gpu: "GPU",
     unavailable: "Indisponível no Expo Go",
+    chipset: "Família do chipset",
+    auto: "Detectar automaticamente",
+    snapdragon: "Snapdragon · Adreno",
+    mediatek: "MediaTek · Mali",
+    chipsetHint: "Escolha manualmente enquanto a ponte nativa não informa a GPU.",
+    cpuProfile: "Perfil de CPU",
+    gpuProfile: "Perfil de GPU",
+    safePreset: "recomendação segura",
+    perGame: "por jogo",
   },
   "en-US": {
-    home: "Desktop",
+    home: "Shortcuts",
     library: "Games",
     settings: "Settings",
-    greeting: "Your hardware, no guesswork.",
-    subtitle: "A transparent, configurable Windows cockpit for mobile.",
+    greeting: "Your games, no detours.",
+    subtitle: "Open a shortcut, tune a profile and play when the native bridge is ready.",
+    shortcuts: "Shortcuts",
+    addShortcut: "Add game",
+    environments: "Environments",
+    open: "Open",
+    configure: "Tune",
     device: "My device",
     detected: "detection available",
     pending: "native bridge pending",
@@ -111,6 +131,15 @@ export const translations = {
     cpu: "Processor",
     gpu: "GPU",
     unavailable: "Unavailable in Expo Go",
+    chipset: "Chipset family",
+    auto: "Auto detect",
+    snapdragon: "Snapdragon · Adreno",
+    mediatek: "MediaTek · Mali",
+    chipsetHint: "Choose manually while the native bridge cannot report the GPU.",
+    cpuProfile: "CPU profile",
+    gpuProfile: "GPU profile",
+    safePreset: "safe recommendation",
+    perGame: "per game",
   },
 } as const;
 
@@ -123,6 +152,21 @@ export const performanceProfiles: Record<PerformanceProfile, { label: string; de
   eco: { label: "Eco", description: "Menor consumo e calor para sessões longas.", accent: COLORS.green },
   balanced: { label: "Equilibrado", description: "Ponto de partida seguro para a maioria dos aparelhos.", accent: COLORS.cyan },
   turbo: { label: "Turbo", description: "Mais margem térmica e energia; use com carregador.", accent: COLORS.violet },
+};
+
+export type ChipsetProfile = { id: string; title: string; cpu: string; gpu: string; detail: string; accent: string; performance: PerformanceProfile };
+
+export const chipsetProfiles: Record<Exclude<ChipsetFamily, "auto">, ChipsetProfile[]> = {
+  snapdragon: [
+    { id: "sd-balanced", title: "Snapdragon equilibrado", cpu: "CPU · Balanced", gpu: "Adreno · Vulkan", detail: "Ponto de partida para Adreno; valide o driver Vulkan por jogo.", accent: COLORS.cyan, performance: "balanced" },
+    { id: "sd-performance", title: "Snapdragon desempenho", cpu: "CPU · Turbo", gpu: "Adreno · Vulkan alto", detail: "Mais margem de desempenho e calor; recomendado com carregador.", accent: COLORS.violet, performance: "turbo" },
+    { id: "sd-battery", title: "Snapdragon bateria", cpu: "CPU · Eco", gpu: "Adreno · OpenGL ES", detail: "Reduz consumo quando a sessão longa importa mais que a qualidade.", accent: COLORS.green, performance: "eco" },
+  ],
+  mediatek: [
+    { id: "mt-balanced", title: "MediaTek equilibrado", cpu: "CPU · Balanced", gpu: "Mali · Vulkan", detail: "Preset inicial para Dimensity/Mali; valide extensões do driver.", accent: COLORS.cyan, performance: "balanced" },
+    { id: "mt-performance", title: "MediaTek desempenho", cpu: "CPU · Turbo", gpu: "Mali · Vulkan alto", detail: "Prioriza desempenho sustentado; monitore temperatura do aparelho.", accent: COLORS.violet, performance: "turbo" },
+    { id: "mt-battery", title: "MediaTek bateria", cpu: "CPU · Eco", gpu: "Mali · OpenGL ES", detail: "Perfil conservador para aparelhos Helio ou sessões mais longas.", accent: COLORS.green, performance: "eco" },
+  ],
 };
 
 export const games = [

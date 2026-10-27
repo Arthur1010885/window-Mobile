@@ -58,4 +58,4 @@ NexTerra is an original interface. The future Windows layer must comply with the
 
 ## Status
 
-**v0.1.0 — interface foundation.** The managed Expo project is ready for preview and source publication. Native Wine/DXVK/Box64 execution and a signed APK remain explicit follow-up work.
+**v0.2.0 — launcher and chipset profiles.** The managed Expo project now has a simpler shortcut-first UI and Snapdragon/MediaTek recommendations. Native Wine/DXVK/Box64 execution and a signed APK remain explicit follow-up work.

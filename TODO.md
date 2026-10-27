@@ -9,6 +9,7 @@
 
 - [x] Exibir o modelo disponível pelas APIs Expo, Android, versão do sistema e uma indicação honesta dos campos que dependem da ponte nativa.
 - [x] Oferecer perfis Eco, Equilibrado e Turbo, com explicação do impacto e possibilidade de trocar/restaurar o perfil.
+- [x] Oferecer presets específicos para Snapdragon/Adreno e MediaTek/Mali, com seleção automática ou manual e explicação de CPU/GPU/API.
 - [x] Exibir recomendação gráfica baseada no diagnóstico sem prometer FPS ou compatibilidade não validada.
 
 ## Configuração guiada e idiomas
@@ -21,6 +22,7 @@
 
 - [x] Criar biblioteca para jogos/aplicativos Windows com pesquisa, favoritos, categoria e estado de compatibilidade.
 - [x] Documentar contrato modular futuro para Wine, DXVK e Box64, sem fingir que `.exe` já executa nesta versão.
+- [x] Simplificar a tela inicial para atalhos e adicionar fluxo de referência inspirado em launchers públicos como Winlator/WinHub.
 
 ## Código público e release
 

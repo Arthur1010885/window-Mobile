@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0] — 2026-10-27
+
+### Added
+
+- Home simplificada em formato de launcher, priorizando atalhos, “Adicionar jogo” e ambientes.
+- Navegação reorganizada para Atalhos, Jogos e Ajustes, com menos métricas no primeiro painel.
+- Seleção de família Snapdragon/Adreno, MediaTek/Mali ou detecção automática.
+- Presets de CPU/GPU específicos para Snapdragon e MediaTek, com Vulkan/OpenGL ES, impacto e explicação por perfil.
+- Referências públicas de UI registradas em `docs/ui-references.md` sem copiar código ou assets de terceiros.
+
+### Fixed
+
+- Removido erro de runtime causado por texto direto dentro de um `View` no botão de adicionar.
+
 ## [0.1.0] — 2026-10-27
 
 ### Added
