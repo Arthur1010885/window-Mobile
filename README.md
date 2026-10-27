@@ -78,6 +78,8 @@ Referências técnicas avaliadas:
 
 Leia a decisão completa em [`docs/native-runtime-migration.md`](docs/native-runtime-migration.md) e a referência de UI em [`docs/ui-references.md`](docs/ui-references.md).
 
+Se o aparelho for PowerVR/Rogue e o jogo abrir com tela preta, siga [`docs/powervr-black-screen.md`](docs/powervr-black-screen.md); o próximo APK já inicia novos containers com fallback EGL/OpenGL + WineD3D.
+
 ## Roadmap público
 
 - [x] Launcher simples com atalhos e biblioteca.
