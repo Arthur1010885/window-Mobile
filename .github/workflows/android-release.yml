@@ -26,11 +26,28 @@ jobs:
           version: 9.12.0
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build Android preview APK
+      - name: Configure EAS CLI
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-      - run: eas build --platform android --profile preview --non-interactive --wait
-      - name: Explain artifact handoff
-        run: echo "EAS completed. Download the artifact URL from the build logs and attach it to the GitHub Release."
+      - name: Build Android preview APK
+        run: eas build --platform android --profile preview --non-interactive --wait --json > eas-build.json
+      - name: Download APK artifact
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          BUILD_URL=$(jq -r 'if type == "array" then .[0].artifacts.buildUrl else .artifacts.buildUrl end' eas-build.json)
+          test -n "$BUILD_URL" && test "$BUILD_URL" != "null"
+          curl --fail --location "$BUILD_URL" --output NexTerra-${GITHUB_REF_NAME}.apk
+      - name: Create GitHub Release with APK
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "NexTerra-${GITHUB_REF_NAME}.apk" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "NexTerra $GITHUB_REF_NAME" \
+            --notes-file CHANGELOG.md
+      - name: Explain manual workflow dispatch
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "Build completed. Use a v* tag to also download the APK and create a GitHub Release automatically."

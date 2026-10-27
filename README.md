@@ -26,7 +26,7 @@ Abra o projeto pelo Preview Expo ou com Expo Go. A porta Metro é `8081` e a API
 
 ### APK e release
 
-O build Android não deve ser executado dentro do processo Metro. Para gerar um APK de teste, configure `EXPO_TOKEN` como secret do GitHub e dispare o workflow `Android Release`, ou execute `eas build --platform android --profile preview` em uma máquina com EAS CLI. O resultado do build precisa ser anexado manualmente a uma GitHub Release após a conclusão do EAS; este repositório não publica um APK inexistente.
+O build Android não deve ser executado dentro do processo Metro. Configure `EXPO_TOKEN` como secret do GitHub e envie uma tag `v*`; o workflow `Android Release` executa o EAS, baixa o APK e cria a GitHub Release automaticamente. Um disparo manual apenas valida o build. Sem o secret, não existe APK publicado por este repositório.
 
 ### Licenças e referências
 
@@ -50,7 +50,7 @@ Open the project in the Expo Preview or Expo Go. Metro runs on `8081` and the st
 
 ### APK and release
 
-Do not run an Android release build inside the resident Metro process. Configure `EXPO_TOKEN` as a GitHub secret and trigger `Android Release`, or run `eas build --platform android --profile preview` on a machine with the EAS CLI. Attach the completed artifact to a GitHub Release only after EAS finishes; this repository never links to a fake APK.
+Do not run an Android release build inside the resident Metro process. Configure `EXPO_TOKEN` as a GitHub secret and push a `v*` tag; `Android Release` runs EAS, downloads the APK and creates the GitHub Release automatically. A manual dispatch only validates the build. Without the secret, this repository does not publish a fake APK.
 
 ### License notes
 
