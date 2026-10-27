@@ -1,16 +1,61 @@
-# NexTerra Mobile
+<div align="center">
+  <img src="assets/images/icon.png" width="112" alt="NexTerra logo" />
+  <h1>NexTerra Mobile</h1>
+  <p><strong>Um desktop Windows portátil no Android, com runtime nativo real em evolução.</strong></p>
+  <p>Wine · Box64/Box86 · FEXCore · DXVK · VKD3D · Mesa · Containers · Atalhos por jogo</p>
 
-> **Modo PC portátil para Android.** Um cockpit leve para diagnosticar o aparelho, ajustar perfis de desempenho e organizar jogos Windows — com uma ponte nativa Wine/DXVK/Box64 preparada para uma etapa posterior.
+  <p>
+    <a href="https://github.com/Arthur1010885/window-Mobile/stargazers"><img src="https://img.shields.io/github/stars/Arthur1010885/window-Mobile?style=for-the-badge&logo=github&label=stars" alt="GitHub stars" /></a>
+    <a href="https://github.com/Arthur1010885/window-Mobile/actions"><img src="https://img.shields.io/github/actions/workflow/status/Arthur1010885/window-Mobile/build.yml?branch=native-runtime&style=for-the-badge&logo=github-actions&label=native%20build" alt="Native build" /></a>
+    <a href="https://github.com/Arthur1010885/window-Mobile/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Arthur1010885/window-Mobile?style=for-the-badge" alt="License" /></a>
+  </p>
 
-[Português](#português) · [English](#english)
+  <p>
+    <a href="https://github.com/Arthur1010885/window-Mobile/tree/native-runtime">Runtime Android nativo</a> ·
+    <a href="https://github.com/Arthur1010885/window-Mobile/actions">Builds e APK</a> ·
+    <a href="https://github.com/Arthur1010885/window-Mobile/issues">Issues</a> ·
+    <a href="CHANGELOG.md">Changelog</a>
+  </p>
+</div>
 
-## Português
+<p align="center">
+  <img src="docs/images/desktop-mode.png" width="250" alt="Modo desktop NexTerra com janela, atalhos e barra de tarefas" />
+  <img src="docs/images/launcher.png" width="250" alt="Launcher NexTerra com atalhos e acesso ao desktop" />
+</p>
 
-O NexTerra Mobile transforma o celular em uma área de trabalho de jogos configurável. A versão atual já entrega desktop visual com wallpaper escuro, identidade própria, diagnóstico do modelo disponível no Expo, perfis Eco/Equilibrado/Turbo, recomendação gráfica, assistente em cinco passos, biblioteca de jogos e seletor de idioma PT-BR/EN-US com bandeiras.
+> **Meta pública:** chegar a 1.000 estrelas construindo uma camada Android aberta, transparente e respeitosa com as licenças de Wine, Mesa, Box64, DXVK e todos os componentes distribuídos.
 
-A execução de arquivos `.exe` ainda não está habilitada nesta versão. O app não finge ter Wine funcionando: o contrato modular para Wine, DXVK e Box64 está em `docs/native-bridge.md`, pronto para receber um módulo Android NDK testado por arquitetura e GPU.
+## O que é o NexTerra
 
-### Começar
+O NexTerra é um launcher de modo PC para Android. A experiência começa com uma área de trabalho própria, atalhos de jogos e uma biblioteca simples. A branch `main` contém a interface Expo/React Native e o protótipo navegável. A branch [`native-runtime`](https://github.com/Arthur1010885/window-Mobile/tree/native-runtime) contém a adaptação Android/NDK baseada em Winlator Bionic/Ludashi, com a camada real de compatibilidade Windows.
+
+O objetivo não é fingir que um `.exe` funciona em qualquer aparelho. O objetivo é combinar uma interface bonita com diagnósticos honestos, perfis por hardware, containers isolados, configuração por jogo e um runtime que possa ser medido em aparelhos reais.
+
+## Experiência
+
+- **Modo desktop:** wallpaper próprio, atalhos, janela NexTerra Explorer, menu iniciar, barra de tarefas e acesso rápido à biblioteca.
+- **Atalhos por jogo:** cada jogo pode ter seu próprio container, driver, preset Box64/FEX, resolução, controles e argumentos.
+- **Perfis de hardware:** presets separados para Snapdragon/Adreno e MediaTek/Mali, com Vulkan/OpenGL ES e explicação do impacto.
+- **Biblioteca enxuta:** favoritos, busca, categoria, estado de compatibilidade e caminho preparado para executáveis autorizados pelo usuário.
+- **Runtime nativo:** Wine, Box64/Box86, FEXCore, DXVK, VKD3D, PulseAudio, XServer e componentes gráficos Android na branch nativa.
+- **Transparência:** nenhuma promessa universal de FPS, nenhum jogo, BIOS, DLL ou conteúdo proprietário distribuído pelo projeto.
+
+## Estrutura das branches
+
+| Branch | Função | Estado |
+| --- | --- | --- |
+| [`main`](https://github.com/Arthur1010885/window-Mobile/tree/main) | Interface Expo, modo desktop, biblioteca, setup e documentação | Preview funcional |
+| [`native-runtime`](https://github.com/Arthur1010885/window-Mobile/tree/native-runtime) | Android/Gradle/NDK adaptado de Winlator Bionic/Ludashi | Build arm64-v8a no GitHub Actions |
+
+A separação é intencional. A UI pode evoluir sem quebrar o runtime nativo, e o runtime pode ser testado com Gradle/NDK sem transformar o protótipo Expo em uma promessa falsa de emulação.
+
+## APK nativo
+
+O workflow [Android CI Bionic](https://github.com/Arthur1010885/window-Mobile/actions/workflows/build.yml) gera o APK da branch `native-runtime` com JDK 17, Android SDK, NDK e dependências nativas. Abra a execução mais recente em **Actions → Android CI Bionic → Artifacts** para baixar o artefato `NexTerra-Native-*`.
+
+O APK nativo é arm64-v8a. A compatibilidade depende do Android, SoC, GPU, driver Vulkan, memória, temperatura e do jogo. A branch nativa usa o kernel Android real do aparelho; um APK não instala um kernel próprio. Kernel customizado é uma imagem de boot/ROM específica por dispositivo e fica fora do escopo de um aplicativo comum.
+
+## Começar pela interface
 
 ```bash
 pnpm install
@@ -18,48 +63,48 @@ pnpm db:push
 pnpm dev
 ```
 
-Abra o projeto pelo Preview Expo ou com Expo Go. A porta Metro é `8081` e a API do starter é `3000`; elas são fixas pela infraestrutura do projeto.
+O Preview usa Metro na porta `8081` e a API do starter na porta `3000`. Abra a home e toque em **Abrir desktop** para entrar na área de trabalho NexTerra.
 
-### Estrutura
+## Base nativa e licenças
 
-`app/` contém as rotas Expo Router. `lib/nexterra.ts` concentra o tema, traduções, presets e diagnóstico. `lib/nexterra-state.tsx` guarda o estado de idioma, perfil e assistente. `docs/` registra limites e o contrato da integração nativa. `.github/workflows/android-release.yml` prepara o build Android com EAS.
+A base Android nativa foi adaptada de [`StevenMXZ/Winlator-Ludashi`](https://github.com/StevenMXZ/Winlator-Ludashi). O projeto upstream documenta containers x86_64 com Box86/Box64 e Arm64EC com FEXCore, além de componentes como DXVK, VKD3D, Mesa/Turnip e PulseAudio. A camada do projeto e os componentes empacotados podem ter licenças diferentes; consulte os avisos dentro da branch e preserve atribuição antes de redistribuir builds.
 
-### APK e release
+Referências técnicas avaliadas:
 
-O build Android não deve ser executado dentro do processo Metro. Configure `EXPO_TOKEN` como secret do GitHub e envie uma tag `v*`; o workflow `Android Release` executa o EAS, baixa o APK e cria a GitHub Release automaticamente. Um disparo manual apenas valida o build. Sem o secret, não existe APK publicado por este repositório.
+- [`brunodev85/winlator`](https://github.com/brunodev85/winlator) — referência original Android/Wine/Box86/Box64.
+- [`StevenMXZ/Winlator-Ludashi`](https://github.com/StevenMXZ/Winlator-Ludashi) — base escolhida para o runtime nativo.
+- [`RemiPelloux/OpenNative`](https://github.com/RemiPelloux/OpenNative) — alternativa GPL-3.0 com runtime Android mais amplo.
+- [`nihui/mesa-turnip-android-driver`](https://github.com/nihui/mesa-turnip-android-driver) — referência de Turnip para GPUs Adreno.
 
-### Licenças e referências
+Leia a decisão completa em [`docs/native-runtime-migration.md`](docs/native-runtime-migration.md) e a referência de UI em [`docs/ui-references.md`](docs/ui-references.md).
 
-O NexTerra é uma interface original. A futura camada Windows deverá respeitar as licenças de Wine, DXVK, Box64 e de qualquer runtime distribuído. Não inclua DLLs, jogos, BIOS ou binários de terceiros sem verificar a licença e a redistribuição.
+## Roadmap público
+
+- [x] Launcher simples com atalhos e biblioteca.
+- [x] Modo desktop visual com janela, menu iniciar e barra de tarefas.
+- [x] Presets Snapdragon/Adreno e MediaTek/Mali.
+- [x] Branch Android nativa baseada em runtime real.
+- [x] Build arm64-v8a via GitHub Actions.
+- [ ] Validar APK nativo em aparelhos Snapdragon e MediaTek reais.
+- [ ] Conectar a interface NexTerra ao runtime nativo sem remover containers, controles ou display.
+- [ ] Adicionar diagnóstico nativo de CPU/GPU/RAM e thermal throttling.
+- [ ] Publicar releases estáveis com checksums, notas de compatibilidade e logs sanitizados.
+- [ ] Alcançar 1.000 estrelas com contribuições, testes reproduzíveis e documentação aberta.
+
+## Contribua
+
+Quer ajudar a chegar à primeira 1K? Dê uma estrela, abra uma issue com aparelho/Android/SoC/GPU/driver/jogo/configuração, teste apenas software que você possui ou está autorizado a executar e envie PRs pequenos com evidência. Relatórios de performance precisam separar ganho medido de expectativa.
+
+Não envie jogos, ROMs, BIOS, DLLs proprietárias, saves ou credenciais. Não abra issues com dados pessoais ou logs que revelem caminhos privados.
 
 ## English
 
-NexTerra Mobile turns an Android phone into a configurable gaming desktop. The current version includes a dark Windows-inspired desktop, original branding, Expo device detection, Eco/Balanced/Turbo profiles, graphics recommendations, a five-step setup assistant, a Windows game library and PT-BR/EN-US language switching with flags.
+NexTerra Mobile is an Android PC-mode launcher with a real native runtime branch. `main` contains the Expo/React Native UI prototype and desktop shell. [`native-runtime`](https://github.com/Arthur1010885/window-Mobile/tree/native-runtime) contains the Android/NDK adaptation based on Winlator Bionic/Ludashi, including Wine, Box64/Box86, FEXCore, DXVK, VKD3D, PulseAudio, containers and Android graphics components.
 
-`.exe` execution is not enabled yet. NexTerra does not pretend that Wine is already working: `docs/native-bridge.md` defines the modular Android NDK contract for a future, device-tested Wine/DXVK/Box64 layer.
+The project is intentionally honest about compatibility. The APK uses the device's real Android kernel and graphics stack; it does not install a universal Windows kernel. Compatibility varies by SoC, GPU, driver, Android version, thermal state and game.
 
-### Getting started
-
-```bash
-pnpm install
-pnpm db:push
-pnpm dev
-```
-
-Open the project in the Expo Preview or Expo Go. Metro runs on `8081` and the starter API on `3000`; these ports are fixed by the managed project.
-
-### APK and release
-
-Do not run an Android release build inside the resident Metro process. Configure `EXPO_TOKEN` as a GitHub secret and push a `v*` tag; `Android Release` runs EAS, downloads the APK and creates the GitHub Release automatically. A manual dispatch only validates the build. Without the secret, this repository does not publish a fake APK.
-
-### License notes
-
-NexTerra is an original interface. The future Windows layer must comply with the licenses of Wine, DXVK, Box64 and every bundled runtime. Do not ship third-party DLLs, games, BIOS files or binaries without checking redistribution rights.
+**Road to 1K stars:** star the repository, test on hardware, report reproducible results and help us turn the runtime branch into a documented, measurable and respectful open-source Android experience.
 
 ## Status
 
-**v0.2.1 — desktop mode.** The managed Expo project now has a shortcut-first launcher plus an accessible desktop with wallpaper, windows, Start menu and taskbar. Native Wine/DXVK/Box64 execution and a signed APK remain explicit follow-up work.
-
-### Native runtime branch
-
-The public [`native-runtime` branch](https://github.com/Arthur1010885/window-Mobile/tree/native-runtime) is the Android/NDK adaptation based on Winlator Bionic/Ludashi. It carries the real Wine, Box64/Box86, FEXCore, DXVK, VKD3D, PulseAudio and container runtime. The Expo `main` branch remains the UI prototype until the native build and device validation complete. See [`docs/native-runtime-migration.md`](docs/native-runtime-migration.md).
+**Native build:** GitHub Actions builds the arm64-v8a runtime branch. **`.exe` compatibility:** real runtime present in `native-runtime`, device validation still required. **Kernel:** Android kernel from the user's device, not bundled in the APK. **License:** preserve upstream and third-party notices before redistribution.
