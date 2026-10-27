@@ -59,3 +59,7 @@ NexTerra is an original interface. The future Windows layer must comply with the
 ## Status
 
 **v0.2.1 — desktop mode.** The managed Expo project now has a shortcut-first launcher plus an accessible desktop with wallpaper, windows, Start menu and taskbar. Native Wine/DXVK/Box64 execution and a signed APK remain explicit follow-up work.
+
+### Native runtime branch
+
+The public [`native-runtime` branch](https://github.com/Arthur1010885/window-Mobile/tree/native-runtime) is the Android/NDK adaptation based on Winlator Bionic/Ludashi. It carries the real Wine, Box64/Box86, FEXCore, DXVK, VKD3D, PulseAudio and container runtime. The Expo `main` branch remains the UI prototype until the native build and device validation complete. See [`docs/native-runtime-migration.md`](docs/native-runtime-migration.md).
