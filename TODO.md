@@ -4,6 +4,7 @@
 
 - [x] Entregar uma área de trabalho mobile com wallpaper escuro, marca NexTerra, janelas visuais, dock e menu de aplicativos.
 - [x] Manter uma interface leve, otimizada para portrait e uso com uma mão, com nome criativo e identidade própria.
+- [x] Permitir acessar um modo desktop organizado, com wallpaper, atalhos, janela NexTerra Explorer, menu iniciar e barra de tarefas.
 
 ## Diagnóstico e otimização
 

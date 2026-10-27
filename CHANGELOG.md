@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1] — 2026-10-27
+
+### Added
+
+- Modo desktop acessível por um botão direto na home, inspirado no fluxo de desktop do Winlator.
+- Wallpaper próprio, atalhos de aparelho/jogos/ajustes, janela NexTerra Explorer, menu iniciar e barra de tarefas.
+- Janela com abas de atalhos e diagnóstico, além de restauração quando minimizada.
+
 ## [0.2.0] — 2026-10-27
 
 ### Added
