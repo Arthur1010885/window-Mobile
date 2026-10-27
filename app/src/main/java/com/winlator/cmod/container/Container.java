@@ -640,6 +640,30 @@ public class Container {
                     break;
             }
         }
+        repairPowerVRContainer(data);
+    }
+
+    private void repairPowerVRContainer(JSONObject data) throws JSONException {
+        if (!GPUInformation.isPowerVRGPU(null) || data.optBoolean("powerVrManualOverride", false)) return;
+        boolean needsRepair = !rendererNative || !"wined3d".equalsIgnoreCase(dxwrapper);
+        if (!needsRepair) return;
+
+        rendererNative = true;
+        rendererDriverId = "system";
+        rendererPresentMode = "fifo";
+        dxwrapper = "wined3d";
+        box64Preset = Box64Preset.PERFORMANCE;
+        String optimizedEnv = data.optString("envVars", DEFAULT_ENV_VARS);
+        if (!optimizedEnv.contains("WINEESYNC=")) optimizedEnv += " WINEESYNC=1";
+        if (!optimizedEnv.contains("mesa_glthread=")) optimizedEnv += " mesa_glthread=true";
+        envVars = optimizedEnv.trim();
+        data.put("rendererNative", true);
+        data.put("rendererDriverId", "system");
+        data.put("rendererPresentMode", "fifo");
+        data.put("dxwrapper", "wined3d");
+        data.put("box64Preset", Box64Preset.PERFORMANCE);
+        data.put("envVars", envVars);
+        data.put("powerVrAutoRepaired", true);
     }
 
     public static void checkObsoleteOrMissingProperties(JSONObject data) {
